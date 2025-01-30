@@ -43,7 +43,7 @@ char getch() {
 int main() {
     FILE *file;
 
-    file = fopen("example.txt", "r");
+    file = fopen("example.txt", "r+");
     if (file == NULL) {
         perror("Error opening file");
         return EXIT_FAILURE;
@@ -67,6 +67,7 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
+        fprintf(file, &c);
         printf("You entered: %c", c);
     }
 
