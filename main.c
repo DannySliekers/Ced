@@ -68,6 +68,7 @@ int main() {
     }
 
     fclose(file);
+    system("clear");
 
     for (int i = 0; i < count; i++) {
         for (int j = 0; j < sizeof(lines[i]); j++) {
@@ -77,15 +78,20 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-        for (int i = 0; i < sizeof(lines[count]); i++) {
-            if (lines[0][i] == '\n') {
-                lines[0][i] = c;
-                lines[0][i + 1] = '\n';
+        for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+            if (lines[count - 1][i] == '\n') {
+                lines[count - 1][i] = c;
+                lines[count - 1][i + 1] = '\n';
                 break;
             }
         }
 
-        printf("You entered: %c", c);
+        system("clear");
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < sizeof(lines[count]); j++) {
+                printf("%c", lines[i][j]);
+            }
+        }
     }
 
     file = fopen("example.txt", "w");
