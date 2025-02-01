@@ -9,7 +9,7 @@ void clear_screen() {
     printf("\033[H\033[J");
 }
 
-void enable_raw_mode() {
+static void enable_raw_mode() {
     struct termios term;
 
     // Get the current terminal settings
@@ -24,7 +24,7 @@ void enable_raw_mode() {
     tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-void disable_raw_mode() {
+static void disable_raw_mode() {
     struct termios term;
 
     // Get the current terminal settings
