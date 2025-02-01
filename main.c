@@ -3,6 +3,7 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include "terminalutils.h"
 
 
 void enable_raw_mode() {
@@ -68,7 +69,7 @@ int main() {
     }
 
     fclose(file);
-    system("clear");
+    clear_screen();
 
     for (int i = 0; i < count; i++) {
         printf("%i: ", i + 1);
@@ -88,7 +89,7 @@ int main() {
             }
         }
 
-        system("clear");
+        clear_screen();
         for (int i = 0; i < count; i++) {
             printf("%i: ", i + 1);
 
