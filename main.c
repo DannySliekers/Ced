@@ -71,6 +71,8 @@ int main() {
     system("clear");
 
     for (int i = 0; i < count; i++) {
+        printf("%i: ", i + 1);
+
         for (int j = 0; j < sizeof(lines[i]); j++) {
             printf("%c", lines[i][j]);
         }
@@ -88,6 +90,8 @@ int main() {
 
         system("clear");
         for (int i = 0; i < count; i++) {
+            printf("%i: ", i + 1);
+
             for (int j = 0; j < sizeof(lines[count]); j++) {
                 printf("%c", lines[i][j]);
             }
