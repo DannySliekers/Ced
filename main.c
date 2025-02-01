@@ -43,7 +43,7 @@ char getch() {
 int main() {
     FILE *file;
 
-    file = fopen("example.txt", "r+");
+    file = fopen("example.txt", "r");
     if (file == NULL) {
         perror("Error opening file");
         return EXIT_FAILURE;
@@ -56,8 +56,18 @@ int main() {
     while (fgets(line, sizeof(line), file) != NULL) {
         strncpy(lines[count], line, sizeof(lines[count]) - 1);
         lines[count][sizeof(lines[count]) - 1] = '\0';
+        
+        for (int i = 0; i < sizeof(lines[count]); i++) {
+            if (lines[count][i] == NULL) {
+                lines[count][i] = '\n';
+                break;
+            }
+        }
+        
         count++;
     }
+
+    fclose(file);
 
     for (int i = 0; i < count; i++) {
         for (int j = 0; j < sizeof(lines[i]); j++) {
@@ -67,8 +77,33 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-        fprintf(file, &c);
+        for (int i = 0; i < sizeof(lines[count]); i++) {
+            if (lines[0][i] == '\n') {
+                lines[0][i] = c;
+                lines[0][i + 1] = '\n';
+                break;
+            }
+        }
+
         printf("You entered: %c", c);
+    }
+
+    file = fopen("example.txt", "w");
+    if (file == NULL) {
+        perror("Error opening file");
+        return EXIT_FAILURE;
+    }
+
+    for (int i = 0; i < count;  i++) {
+        for (int j = 0; j <= sizeof(lines[i]); j++) {
+            if (lines[i][j] == '\n') {
+                break;
+            }
+
+            fprintf(file, "%c", lines[i][j]);
+        }
+        
+        fputc('\n', file);
     }
 
     fclose(file);
