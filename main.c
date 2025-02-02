@@ -80,6 +80,6 @@ int main() {
     }
 
     fclose(file);
-
+    clear_screen();
     return EXIT_SUCCESS;
 }
