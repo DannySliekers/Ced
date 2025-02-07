@@ -43,11 +43,23 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-        for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-            if (lines[count - 1][i] == '\n') {
-                lines[count - 1][i] = c;
-                lines[count - 1][i + 1] = '\n';
-                break;
+
+
+        if (c == 127) {
+            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+                if (lines[count - 1][i] == '\n') {
+                    lines[count - 1][i] = '\0';
+                    lines[count - 1][i - 1] = '\n';
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+                if (lines[count - 1][i] == '\n') {
+                    lines[count - 1][i] = c;
+                    lines[count - 1][i + 1] = '\n';
+                    break;
+                }
             }
         }
 
@@ -80,6 +92,6 @@ int main() {
     }
 
     fclose(file);
-
+    clear_screen();
     return EXIT_SUCCESS;
 }
