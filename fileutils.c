@@ -14,14 +14,12 @@ int write_to_file(char lines[100][256], int count) {
 
     for (int i = 0; i < count;  i++) {
         for (int j = 0; j <= sizeof(lines[i]); j++) {
-            if (lines[i][j] == NULL) {
+            if (lines[i][j] == '\0') {
                 break;
             }
 
             fprintf(file, "%c", lines[i][j]);
         }
-        
-        fputc('\n', file);
     }
 
     fclose(file);

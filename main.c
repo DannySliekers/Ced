@@ -36,15 +36,19 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-
         for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-            if (lines[count - 1][i] == NULL) {
+            if (lines[count - 1][i] == '\0') {
                 lines[count - 1][i] = c;
                 break;
             }
         }
 
+        if (c == 10) {
+            count++;
+        }
+
         clear_screen();
+
         for (int i = 0; i < count; i++) {
             printf("%i: ", i + 1);
 
