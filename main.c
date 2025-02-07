@@ -20,14 +20,6 @@ int main() {
     while (fgets(line, sizeof(line), file) != NULL) {
         strncpy(lines[count], line, sizeof(lines[count]) - 1);
         lines[count][sizeof(lines[count]) - 1] = '\0';
-        
-        for (int i = 0; i < sizeof(lines[count]); i++) {
-            if (lines[count][i] == NULL) {
-                lines[count][i] = '\n';
-                break;
-            }
-        }
-        
         count++;
     }
 
@@ -45,24 +37,10 @@ int main() {
     char c;
     while ((c = getch()) != 'q') {
 
-
-        if (c == 127) {
-            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-                if (lines[count - 1][i] == '\n') {
-                    lines[count - 1][i] = '\0';
-                    lines[count - 1][i - 1] = '\n';
-                    break;
-                }
-            }
-        } else if(c == 99) {
-            printf("\033[D");
-        } else {
-            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-                if (lines[count - 1][i] == '\n') {
-                    lines[count - 1][i] = c;
-                    lines[count - 1][i + 1] = '\n';
-                    break;
-                }
+        for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+            if (lines[count - 1][i] == NULL) {
+                lines[count - 1][i] = c;
+                break;
             }
         }
 
