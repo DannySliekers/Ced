@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "terminalutils.h"
+#include "fileutils.h"
 
 int main() {
     FILE *file;
@@ -53,6 +54,8 @@ int main() {
                     break;
                 }
             }
+        } else if(c == 99) {
+            printf("\033[D");
         } else {
             for (int i = 0; i < sizeof(lines[count - 1]); i++) {
                 if (lines[count - 1][i] == '\n') {
@@ -73,25 +76,8 @@ int main() {
         }
     }
 
-    file = fopen("example.txt", "w");
-    if (file == NULL) {
-        perror("Error opening file");
-        return EXIT_FAILURE;
-    }
+    int success = write_to_file(lines, count);
 
-    for (int i = 0; i < count;  i++) {
-        for (int j = 0; j <= sizeof(lines[i]); j++) {
-            if (lines[i][j] == '\n') {
-                break;
-            }
-
-            fprintf(file, "%c", lines[i][j]);
-        }
-        
-        fputc('\n', file);
-    }
-
-    fclose(file);
     clear_screen();
-    return EXIT_SUCCESS;
+    return success;
 }
