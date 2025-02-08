@@ -4,6 +4,10 @@
 #include "terminalutils.h"
 #include "fileutils.h"
 
+#define BACKSPACE 127
+#define LEFT_ARROW 68
+#define NEW_LINE 10
+
 int main() {
     FILE *file;
 
@@ -15,18 +19,18 @@ int main() {
 
     char lines[100][256];
     char line[256];
-    int count = 0;
+    int line_number = 0;
 
     while (fgets(line, sizeof(line), file) != NULL) {
-        strncpy(lines[count], line, sizeof(lines[count]) - 1);
-        lines[count][sizeof(lines[count]) - 1] = '\0';
-        count++;
+        strncpy(lines[line_number], line, sizeof(lines[line_number]) - 1);
+        lines[line_number][sizeof(lines[line_number]) - 1] = '\0';
+        line_number++;
     }
 
     fclose(file);
     clear_screen();
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < line_number; i++) {
         printf("%i: ", i + 1);
 
         for (int j = 0; j < sizeof(lines[i]); j++) {
@@ -35,42 +39,47 @@ int main() {
     }
 
     char c;
+    int cursorpos = 0;
     while ((c = getch()) != 'q') {
         
-        if (c == 127) {
-            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-                if (lines[count - 1][i] == '\0') {
-                    lines[count - 1][i - 1] = '\0';
-                    break;
-                }
+        if (c == BACKSPACE) {
+            lines[line_number - 1][cursorpos - 1] = '\0';
+
+            if (cursorpos > 0) {
+                cursorpos--;
             }
-        } else {
-            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-                if (lines[count - 1][i] == '\0') {
-                    lines[count - 1][i] = c;
-                    break;
-                }
+        }
+        else if (c == LEFT_ARROW) {
+            if (cursorpos > 0) {
+                cursorpos--;
             }
+        }
+        else {
+            lines[line_number - 1][cursorpos] = c;
+            cursorpos++;
         }
 
 
-        if (c == 10) {
-            count++;
+        if (c == NEW_LINE) {
+            line_number++;
         }
 
         clear_screen();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < line_number; i++) {
             printf("%i: ", i + 1);
 
-            for (int j = 0; j < sizeof(lines[count]); j++) {
+            for (int j = 0; j < sizeof(lines[line_number]); j++) {
                 printf("%c", lines[i][j]);
             }
         }
+
+        printf("%i", cursorpos);
+        //printf("\033[%i;%i", line_number - 1, cursorpos);
     }
 
 
-    int success = write_to_file(lines, count);
+    int success = write_to_file(lines, line_number);
 
     clear_screen();
     return success;
