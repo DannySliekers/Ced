@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "fileutils.h"
+#include "texteditor.h"
 
-int write_to_file(char lines[100][256], int count) {
+int write_to_file(TextEditor text_editor) {
     FILE *file;
     file = fopen("example.txt", "w");
 
@@ -12,13 +13,13 @@ int write_to_file(char lines[100][256], int count) {
     }
 
 
-    for (int i = 0; i < count;  i++) {
-        for (int j = 0; j <= sizeof(lines[i]); j++) {
-            if (lines[i][j] == '\0') {
+    for (int i = 0; i < text_editor.line_number;  i++) {
+        for (int j = 0; j <= sizeof(text_editor.lines[i]); j++) {
+            if (text_editor.lines[i][j] == '\0') {
                 break;
             }
 
-            fprintf(file, "%c", lines[i][j]);
+            fprintf(file, "%c", text_editor.lines[i][j]);
         }
     }
 

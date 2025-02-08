@@ -9,6 +9,10 @@ void clear_screen() {
     printf("\033[H\033[J");
 }
 
+void move_cursor(int line_number, int cursor_pos) {
+    printf("\033[%i;%iH", line_number, cursor_pos);
+}
+
 static void enable_raw_mode() {
     struct termios term;
 

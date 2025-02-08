@@ -1,5 +1,6 @@
 #include "inputhandler.h"
 #include "terminalutils.h"
+#include "texteditor.h"
 
 #define BACKSPACE 127
 #define LEFT_ARROW 68
@@ -9,27 +10,27 @@
 #define CSI 91
 #define D 68
 
-void handle_input(char c, int* line_number, int* cursor_pos, char lines[100][256]) {
+void handle_input(char c, TextEditor* text_editor) {
     if (c == BACKSPACE) {
-        lines[*line_number - 1][*cursor_pos - 1] = '\0';
+        text_editor->lines[text_editor->line_number - 1][text_editor->cursor_pos - 1] = '\0';
 
-        if (cursor_pos > 0) {
-            (*cursor_pos)--;
+        if (text_editor->cursor_pos > 0) {
+            text_editor->cursor_pos--;
         }
     }
     else if (c == 27 && getch() == CSI && getch() == D) {
-        if (cursor_pos > 0) {
-            (*cursor_pos)--;
+        if (text_editor->cursor_pos > 0) {
+            text_editor->cursor_pos--;
         }
     }
     else {
-        lines[*line_number - 1][*cursor_pos] = c;
-        (*cursor_pos)++;
+        text_editor->lines[text_editor->line_number - 1][text_editor->cursor_pos] = c;
+        text_editor->cursor_pos++;
     }
 
 
     if (c == NEW_LINE) {
-        (*line_number)++;
-        *cursor_pos = 0;
+        text_editor->line_number++;
+        text_editor->cursor_pos = 0;
     }
 }

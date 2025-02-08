@@ -1,0 +1,12 @@
+#ifndef TEXTEDITOR_H
+#define TEXTEDITOR_H
+
+typedef struct {
+    char lines[100][256];
+    int line_number;
+    int cursor_pos;
+} TextEditor;
+
+void print_to_screen(TextEditor text_editor);
+
+#endif
