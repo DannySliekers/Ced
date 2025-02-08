@@ -28,6 +28,7 @@ int main() {
 
     clear_screen();
     print_to_screen(text_editor);
+    move_cursor(text_editor.line_number, text_editor.cursor_pos + 4);        
 
     char c;
     while ((c = getch()) != 'q') {
