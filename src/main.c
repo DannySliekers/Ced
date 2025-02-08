@@ -8,6 +8,7 @@
 #define LEFT_ARROW 68
 #define NEW_LINE 10
 #define ESCAPE 27
+// Control Sequence Initiator
 #define CSI 91
 #define D 68
 
@@ -65,6 +66,7 @@ int main() {
 
         if (c == NEW_LINE) {
             line_number++;
+            cursor_pos = 0;
         }
 
         clear_screen();
@@ -78,7 +80,7 @@ int main() {
         }
 
         //Move cursor
-        printf("\033[%i;%iH", line_number - 1, cursor_pos + 4);
+        printf("\033[%i;%iH", line_number, cursor_pos + 4);
     }
 
 
