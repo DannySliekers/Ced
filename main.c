@@ -76,7 +76,9 @@ int main() {
                 printf("%c", lines[i][j]);
             }
         }
-        //printf("\033[%i;%i", line_number - 1, cursorpos);
+
+        //Move cursor
+        printf("\033[%i;%iH", line_number - 1, cursor_pos + 4);
     }
 
 
