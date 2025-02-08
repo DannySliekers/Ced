@@ -7,6 +7,9 @@
 #define BACKSPACE 127
 #define LEFT_ARROW 68
 #define NEW_LINE 10
+#define ESCAPE 27
+#define CSI 91
+#define D 68
 
 int main() {
     FILE *file;
@@ -39,24 +42,24 @@ int main() {
     }
 
     char c;
-    int cursorpos = 0;
+    int cursor_pos = 0;
     while ((c = getch()) != 'q') {
         
         if (c == BACKSPACE) {
-            lines[line_number - 1][cursorpos - 1] = '\0';
+            lines[line_number - 1][cursor_pos - 1] = '\0';
 
-            if (cursorpos > 0) {
-                cursorpos--;
+            if (cursor_pos > 0) {
+                cursor_pos--;
             }
         }
-        else if (c == LEFT_ARROW) {
-            if (cursorpos > 0) {
-                cursorpos--;
+        else if (c == 27 && getch() == CSI && getch() == D) {
+            if (cursor_pos > 0) {
+                cursor_pos--;
             }
         }
         else {
-            lines[line_number - 1][cursorpos] = c;
-            cursorpos++;
+            lines[line_number - 1][cursor_pos] = c;
+            cursor_pos++;
         }
 
 
@@ -73,8 +76,6 @@ int main() {
                 printf("%c", lines[i][j]);
             }
         }
-
-        printf("%i", cursorpos);
         //printf("\033[%i;%i", line_number - 1, cursorpos);
     }
 
