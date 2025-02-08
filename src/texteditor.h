@@ -8,5 +8,6 @@ typedef struct {
 } TextEditor;
 
 void print_to_screen(TextEditor text_editor);
+void set_cursor_pos(TextEditor* text_editor);
 
 #endif

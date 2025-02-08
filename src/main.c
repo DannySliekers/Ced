@@ -26,6 +26,7 @@ int main() {
 
     fclose(file);
 
+    set_cursor_pos(&text_editor);
     clear_screen();
     print_to_screen(text_editor);
     move_cursor(text_editor.line_number, text_editor.cursor_pos + 4);        
