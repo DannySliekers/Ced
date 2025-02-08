@@ -15,13 +15,14 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    TextEditor text_editor = { {0}, 0, 0 };
+    TextEditor text_editor = { {0}, 0, 0, 0 };
     char line[256];
 
     while (fgets(line, sizeof(line), file) != NULL) {
         strncpy(text_editor.lines[text_editor.line_number], line, sizeof(text_editor.lines[text_editor.line_number]) - 1);
         text_editor.lines[text_editor.line_number][sizeof(text_editor.lines[text_editor.line_number]) - 1] = '\0';
         text_editor.line_number++;
+        text_editor.total_lines++;
     }
 
     fclose(file);

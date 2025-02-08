@@ -13,7 +13,7 @@ int write_to_file(TextEditor text_editor) {
     }
 
 
-    for (int i = 0; i < text_editor.line_number;  i++) {
+    for (int i = 0; i < text_editor.total_lines;  i++) {
         for (int j = 0; j <= sizeof(text_editor.lines[i]); j++) {
             if (text_editor.lines[i][j] == '\0') {
                 break;

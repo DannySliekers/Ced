@@ -64,6 +64,7 @@ void handle_input(char c, TextEditor* text_editor) {
 
     if (c == NEW_LINE) {
         text_editor->line_number++;
+        text_editor->total_lines++;
         text_editor->cursor_pos = 0;
     }
 }
