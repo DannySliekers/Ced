@@ -36,12 +36,23 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-        for (int i = 0; i < sizeof(lines[count - 1]); i++) {
-            if (lines[count - 1][i] == '\0') {
-                lines[count - 1][i] = c;
-                break;
+        
+        if (c == 127) {
+            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+                if (lines[count - 1][i] == '\0') {
+                    lines[count - 1][i - 1] = '\0';
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < sizeof(lines[count - 1]); i++) {
+                if (lines[count - 1][i] == '\0') {
+                    lines[count - 1][i] = c;
+                    break;
+                }
             }
         }
+
 
         if (c == 10) {
             count++;
@@ -57,6 +68,7 @@ int main() {
             }
         }
     }
+
 
     int success = write_to_file(lines, count);
 
