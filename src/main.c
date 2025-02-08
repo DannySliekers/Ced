@@ -3,14 +3,7 @@
 #include <string.h>
 #include "terminalutils.h"
 #include "fileutils.h"
-
-#define BACKSPACE 127
-#define LEFT_ARROW 68
-#define NEW_LINE 10
-#define ESCAPE 27
-// Control Sequence Initiator
-#define CSI 91
-#define D 68
+#include "inputhandler.h"
 
 int main() {
     FILE *file;
@@ -46,29 +39,7 @@ int main() {
     int cursor_pos = 0;
     while ((c = getch()) != 'q') {
         
-        if (c == BACKSPACE) {
-            lines[line_number - 1][cursor_pos - 1] = '\0';
-
-            if (cursor_pos > 0) {
-                cursor_pos--;
-            }
-        }
-        else if (c == 27 && getch() == CSI && getch() == D) {
-            if (cursor_pos > 0) {
-                cursor_pos--;
-            }
-        }
-        else {
-            lines[line_number - 1][cursor_pos] = c;
-            cursor_pos++;
-        }
-
-
-        if (c == NEW_LINE) {
-            line_number++;
-            cursor_pos = 0;
-        }
-
+        handle_input(c, &line_number, &cursor_pos, lines);
         clear_screen();
 
         for (int i = 0; i < line_number; i++) {
