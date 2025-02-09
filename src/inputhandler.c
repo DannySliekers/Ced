@@ -1,7 +1,7 @@
+#include <string.h>
 #include "inputhandler.h"
 #include "terminalutils.h"
 #include "texteditor.h"
-#include <string.h>
 
 #define BACKSPACE 127
 #define LEFT_ARROW 68
@@ -46,14 +46,14 @@ static void handle_esc(TextEditor* text_editor) {
         }
         //Left arrow key
         else if (potential_cs == D) {
-
             if (text_editor->cursor_pos > 0) {
                 text_editor->cursor_pos--;
             }
             else if(text_editor->line_number - 1 > 0) {
+                text_editor->line_number--;
+
                 int char_count = get_char_count(*text_editor);
                 text_editor->cursor_pos = char_count;
-                text_editor->line_number--;
             }
         }
     }

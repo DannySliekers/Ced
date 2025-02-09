@@ -26,3 +26,18 @@ void debug_log_int(const int number) {
 
     fclose(log_file);
 }
+
+void debug_log_char_codes(const char* message) {
+    FILE *log_file;
+    log_file = fopen("log.txt", "a");
+
+    if (log_file == NULL) {
+        perror("Error opening file");
+    }
+
+    for (int i = 0; i < sizeof(message); i++) {
+        fprintf(log_file, "DEBUG: %i \n", message[i]);
+    }
+
+    fclose(log_file);
+}
