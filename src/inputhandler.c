@@ -2,7 +2,6 @@
 #include "terminalutils.h"
 #include "texteditor.h"
 #include <string.h>
-#include "logger/logger.h"
 
 #define BACKSPACE 127
 #define LEFT_ARROW 68
@@ -52,13 +51,24 @@ static void handle_esc(TextEditor* text_editor) {
                 text_editor->cursor_pos--;
             }
             else if(text_editor->line_number - 1 > 0) {
-                debug_log_int(text_editor->line_number);
                 int char_count = get_char_count(*text_editor);
                 text_editor->cursor_pos = char_count;
                 text_editor->line_number--;
             }
         }
     }
+}
+
+static void insert_new_char(TextEditor* text_editor, char c) {
+    char temp_lines[256];
+    memcpy(temp_lines, text_editor->lines[text_editor->line_number - 1], sizeof(temp_lines));
+    text_editor->lines[text_editor->line_number - 1][text_editor->cursor_pos] = c;
+    
+    for (int i = text_editor->cursor_pos; i < sizeof(text_editor->lines[text_editor->line_number - 1]) - 1; i++) {
+        text_editor->lines[text_editor->line_number - 1][i + 1] = temp_lines[i];
+    }
+
+    text_editor->cursor_pos++;
 }
 
 void handle_input(char c, TextEditor* text_editor) {
@@ -72,17 +82,8 @@ void handle_input(char c, TextEditor* text_editor) {
     else if (c == 27 ) {
         handle_esc(text_editor);
     } else {
-        char temp_lines[256];
-        memcpy(temp_lines, text_editor->lines[text_editor->line_number - 1], sizeof(temp_lines));
-        text_editor->lines[text_editor->line_number - 1][text_editor->cursor_pos] = c;
-        
-        for (int i = text_editor->cursor_pos; i < 256; i++) {
-            text_editor->lines[text_editor->line_number - 1][i + 1] = temp_lines[i];
-        }
-
-        text_editor->cursor_pos++;
+        insert_new_char(text_editor, c);
     }
-
 
     if (c == NEW_LINE) {
         text_editor->line_number++;
