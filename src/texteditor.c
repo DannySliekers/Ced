@@ -19,3 +19,14 @@ void set_cursor_pos(TextEditor* text_editor) {
         }
     }
 }
+
+int get_char_count(TextEditor text_editor) {
+    for (int i = 0; i < sizeof(text_editor.lines[text_editor.line_number - 1 ]); i++) {
+        if (text_editor.lines[text_editor.line_number - 1][i] == '\0' 
+            || text_editor.lines[text_editor.line_number - 1][i] == '\n') {
+            return i;
+        }
+    }
+
+    return -1;
+}

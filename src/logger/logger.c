@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "logger.h"
 
-void debug_log(const char* message) {
+void debug_log_string(const char* message) {
     FILE *log_file;
     log_file = fopen("log.txt", "a");
 
@@ -10,6 +10,19 @@ void debug_log(const char* message) {
     }
 
     fprintf(log_file, "DEBUG: %s \n", message);
+
+    fclose(log_file);
+}
+
+void debug_log_int(const int number) {
+    FILE *log_file;
+    log_file = fopen("log.txt", "a");
+
+    if (log_file == NULL) {
+        perror("Error opening file");
+    }
+
+    fprintf(log_file, "DEBUG: %i \n", number);
 
     fclose(log_file);
 }

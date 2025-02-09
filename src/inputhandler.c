@@ -2,6 +2,7 @@
 #include "terminalutils.h"
 #include "texteditor.h"
 #include <string.h>
+#include "logger/logger.h"
 
 #define BACKSPACE 127
 #define LEFT_ARROW 68
@@ -22,7 +23,7 @@ static void handle_esc(TextEditor* text_editor) {
 
         //Up arrow key
         if (potential_cs == A) {
-            if (text_editor->line_number > 0) {
+            if (text_editor->line_number - 1 > 0) {
                 text_editor->line_number--;
             }
         }
@@ -34,14 +35,26 @@ static void handle_esc(TextEditor* text_editor) {
         }
         // Right arrow key
         else if (potential_cs == C) {
-            text_editor->cursor_pos++;
+            int char_count = get_char_count(*text_editor);
+
+            if (text_editor->cursor_pos < char_count) {
+                text_editor->cursor_pos++;
+            }
+            else if (text_editor->line_number < text_editor->total_lines) {
+                text_editor->line_number++;
+                text_editor->cursor_pos = 0;
+            }
         }
         //Left arrow key
         else if (potential_cs == D) {
+
             if (text_editor->cursor_pos > 0) {
                 text_editor->cursor_pos--;
             }
-            else if(text_editor->line_number > 0) {
+            else if(text_editor->line_number - 1 > 0) {
+                debug_log_int(text_editor->line_number);
+                int char_count = get_char_count(*text_editor);
+                text_editor->cursor_pos = char_count;
                 text_editor->line_number--;
             }
         }
