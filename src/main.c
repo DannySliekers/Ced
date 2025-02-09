@@ -30,8 +30,7 @@ int main() {
     set_cursor_pos(&text_editor);
     clear_screen();
     print_to_screen(text_editor);
-    // We add 4 to the cursor pos to skip the line number text
-    move_cursor(text_editor.line_number, text_editor.cursor_pos + 4);        
+    move_cursor(text_editor.line_number, text_editor.cursor_pos + get_line_number_skip(text_editor.line_number));        
 
     char c;
     while ((c = getch()) != 'q') {
@@ -40,8 +39,7 @@ int main() {
         clear_screen();
         print_to_screen(text_editor);
 
-        // We add 4 to the cursor pos to skip the line number text
-        move_cursor(text_editor.line_number, text_editor.cursor_pos + 4);        
+        move_cursor(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));        
     }
 
 

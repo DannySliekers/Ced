@@ -11,5 +11,6 @@ typedef struct {
 void print_to_screen(TextEditor text_editor);
 void set_cursor_pos(TextEditor* text_editor);
 int get_char_count(TextEditor text_editor);
+int get_line_number_skip(int line_number);
 
 #endif
