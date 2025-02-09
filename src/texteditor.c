@@ -5,10 +5,7 @@
 void print_to_screen(TextEditor text_editor) {
     for (int i = 0; i < text_editor.total_lines; i++) {
         printf("%i: ", i + 1);
-
-        for (int j = 0; j < sizeof(text_editor.lines[i]); j++) {
-            printf("%c", text_editor.lines[i][j]);
-        }
+        printf("%s", text_editor.lines[i]);
     }
 }
 

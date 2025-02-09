@@ -8,8 +8,8 @@
 
 int main() {
     FILE *file;
-
     file = fopen("example.txt", "r");
+
     if (file == NULL) {
         perror("Error opening file");
         return EXIT_FAILURE;
@@ -26,7 +26,6 @@ int main() {
     }
 
     fclose(file);
-
     set_cursor_pos(&text_editor);
     clear_screen();
     print_to_screen(text_editor);
@@ -34,17 +33,13 @@ int main() {
 
     char c;
     while ((c = getch()) != 'q') {
-        
         handle_input(c, &text_editor);
         clear_screen();
         print_to_screen(text_editor);
-
         move_cursor(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));        
     }
 
-
-    int success = write_to_file(text_editor);
-
     clear_screen();
+    int success = write_to_file(text_editor);
     return success;
 }
