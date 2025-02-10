@@ -9,13 +9,14 @@
 int main() {
     FILE *file;
     file = fopen("example.txt", "r");
-
+    
     if (file == NULL) {
         perror("Error opening file");
         return EXIT_FAILURE;
     }
 
-    TextEditor text_editor = { {0}, 0, 0, 0 };
+    SelectedText selected_text = {-1, -1, -1, -1};
+    TextEditor text_editor = { {0}, 0, 0, 0,  selected_text};
     char line[256];
 
     while (fgets(line, sizeof(line), file) != NULL) {
@@ -36,7 +37,7 @@ int main() {
         handle_input(c, &text_editor);
         clear_screen();
         print_to_screen(text_editor);
-        move_cursor(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));        
+        move_cursor(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));
     }
 
     clear_screen();

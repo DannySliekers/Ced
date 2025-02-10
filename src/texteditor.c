@@ -5,7 +5,21 @@
 void print_to_screen(TextEditor text_editor) {
     for (int i = 0; i < text_editor.total_lines; i++) {
         printf("%i: ", i + 1);
-        printf("%s", text_editor.lines[i]);
+        
+        if (i == text_editor.selected_text.begin_line) {
+            for (int j = 0; j < sizeof(text_editor.lines[i]); j++) {
+                if (j >= text_editor.selected_text.begin_col && j <= text_editor.selected_text.end_col) {
+                    // Highlights the selected text
+                    printf("\033[97;44m%c\033[0m", text_editor.lines[i][j]);
+                }
+                else {
+                    printf("%c", text_editor.lines[i][j]);
+                }
+            }
+        }
+        else {
+            printf("%s", text_editor.lines[i]);
+        }
     }
 }
 
