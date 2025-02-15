@@ -2,6 +2,7 @@
 #include "inputhandler.h"
 #include "terminalutils.h"
 #include "texteditor.h"
+#include "logger/logger.h"
 
 #define BACKSPACE 127
 #define LEFT_ARROW 68
@@ -9,6 +10,7 @@
 #define ESCAPE 27
 #define SEMI_COLON 59
 #define TWO 50
+#define ONE 49
 
 // Control Sequence Initiator
 #define CSI 91
@@ -18,7 +20,7 @@
 #define C 67
 #define D 68
 
-static void handle_esc(TextEditor* text_editor) {
+static void handle_esc(TextEditor* text_editor, bool* reset_text) {
     char potential_csi = getch();
 
     if (potential_csi == CSI) {
@@ -60,6 +62,32 @@ static void handle_esc(TextEditor* text_editor) {
                 text_editor->cursor_pos = char_count;
             }
         }
+        else if(potential_cs == ONE) {
+            char test = getch();
+            if (test == SEMI_COLON) {
+                char test2 = getch();
+                if (test2 == TWO){
+                    char test3 = getch();
+                    if (test3 == D) {
+                        char test4 = getch();
+                        debug_log_int(test4);
+                        *reset_text = false;
+                        bool is_set = is_selected_text_set(text_editor->selected_text);
+            
+                        if (is_set) {
+                            text_editor->selected_text.begin_col--;
+                        } else {
+                            text_editor->selected_text.begin_col = text_editor->cursor_pos - 1;
+                            text_editor->selected_text.end_col = text_editor->cursor_pos - 1;
+                            text_editor->selected_text.begin_line = text_editor->line_number - 1;
+                            text_editor->selected_text.end_line = text_editor->line_number - 1;
+                        }
+            
+                        text_editor->cursor_pos--;
+                    }
+                } 
+            }
+        }
     }
 }
 
@@ -85,23 +113,7 @@ void handle_input(char c, TextEditor* text_editor) {
             text_editor->cursor_pos--;
         }
     } else if (c == ESCAPE ) {
-        handle_esc(text_editor);
-    } else  if (c == SEMI_COLON) {
-        if (getch() == TWO && getch() == D) {
-            should_reset_selected_text = false;
-            bool is_set = is_selected_text_set(text_editor->selected_text);
-
-            if (is_set) {
-                text_editor->selected_text.begin_col--;
-            } else {
-                text_editor->selected_text.begin_col = text_editor->cursor_pos - 1;
-                text_editor->selected_text.end_col = text_editor->cursor_pos - 1;
-                text_editor->selected_text.begin_line = text_editor->line_number - 1;
-                text_editor->selected_text.end_line = text_editor->line_number - 1;
-            }
-
-            text_editor->cursor_pos--;
-        }
+        handle_esc(text_editor, &should_reset_selected_text);
     } else {
         insert_new_char(text_editor, c);
     }

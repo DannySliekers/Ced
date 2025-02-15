@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ncurses.h>
 #include "terminalutils.h"
 #include "fileutils.h"
 #include "inputhandler.h"
 #include "texteditor.h"
 
 int main() {
+    initscr();            // Start ncurses mode
+    cbreak();             // Disable line buffering, but allow CTRL+C
+    noecho();             // Don't show keypresses
+    nodelay(stdscr, TRUE); // Non-blocking input
+
     FILE *file;
     file = fopen("example.txt", "r");
     
@@ -28,19 +34,23 @@ int main() {
 
     fclose(file);
     set_cursor_pos(&text_editor);
-    clear_screen();
+    clear();
     print_to_screen(text_editor);
-    move_cursor(text_editor.line_number, text_editor.cursor_pos + get_line_number_skip(text_editor.line_number));        
-
+    move(text_editor.line_number, text_editor.cursor_pos + get_line_number_skip(text_editor.line_number));        
+    refresh();
     char c;
     while ((c = getch()) != 'q') {
-        handle_input(c, &text_editor);
-        clear_screen();
-        print_to_screen(text_editor);
-        move_cursor(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));
+        if (c != ERR) {
+            handle_input(c, &text_editor);
+            clear();
+            print_to_screen(text_editor);
+            move(text_editor.line_number, text_editor.cursor_pos + + get_line_number_skip(text_editor.line_number));
+            refresh();
+        }
     }
 
-    clear_screen();
+    clear();
+    endwin();
     int success = write_to_file(text_editor);
     return success;
 }
